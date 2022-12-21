@@ -31,7 +31,7 @@ class UsersService {
   }
 
   update(id, data) {
-    console.log(data);
+
     const index = this.users.findIndex(item => item.userId === id)
     if(index === -1){
       throw new Error('USER NOT FOUND 😫😫 ')

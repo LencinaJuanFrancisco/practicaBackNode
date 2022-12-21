@@ -1,21 +1,36 @@
 const express = require('express')
 const router = express.Router()
-
-const { faker } = require('@faker-js/faker');
+const CategoryService = require('./../services/categoryService')
+const service = new CategoryService()
 
 router.get('/',(req,res)=>{
-  const category = []
-  const {size}= req.query
-  const limit = size || 10
-  for (let index = 0; index < limit; index++) {
-    category.push({
-      userId: faker.datatype.uuid(),
-    username: faker.internet.userName(),
-    email: faker.internet.email()
-    })
 
-  }
-  res.json(users)
+    const categories = service.find()
+
+  res.json(categories)
+})
+router.get("/:id",(req,res)=>{
+  const {id} = req.params
+  const findOne = service.findOne(id)
+  res.status(200).json(findOne)
+})
+router.post("/",(req,res)=>{
+  const data = req.body
+  const newCategory = service.create(data)
+  return res.json({message:"Created", newCategory })
+})
+router.patch("/:id",(req,res)=>{
+  const {id} = req.params
+  console.log(id);
+  const data = req.body
+
+  const update = service.update(id,data)
+  res.json({message:"UpDated",update})
+})
+router.delete('/:id',(req,res)=>{
+  const {id} = req.params
+  const rta = service.delete(id)
+  res.json({message: `categoria con id ${rta} eliminado`})
 })
 
 
